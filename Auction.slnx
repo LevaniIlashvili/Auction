@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".gitignore" />
+  </Folder>
+  <Project Path="Auction.Api/Auction.Api.csproj" Id="07e0786f-801b-4d9d-a689-634dc7e93f64" />
+  <Project Path="Auction.Application/Auction.Application.csproj" Id="6f0dd33a-25a2-45c1-9356-dfec6f6fb4c5" />
+  <Project Path="Auction.Domain/Auction.Domain.csproj" />
+  <Project Path="Auction.Infrastructure/Auction.Infrastructure.csproj" Id="c4c8485b-be81-43fe-95ec-b5dc4198ffac" />
+</Solution>
