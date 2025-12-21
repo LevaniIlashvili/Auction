@@ -1,0 +1,15 @@
+services:
+  auction.db:
+      image: postgres:16
+      restart: always
+      environment:
+          POSTGRES_DB: auctiondb
+          POSTGRES_USER: admin
+          POSTGRES_PASSWORD: admin123
+      ports:
+        - "5432:5432"
+      volumes:
+        - "auctiondata:/var/lib/postgresql/data"
+
+volumes:
+  auctiondata:
