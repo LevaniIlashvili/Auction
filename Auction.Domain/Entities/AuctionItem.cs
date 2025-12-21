@@ -15,7 +15,9 @@ public class AuctionItem
     public DateTimeOffset EndDate { get; private set; }
     public AuctionStatus Status { get; private set; }
 
-    public ICollection<Bid> Bids { get; private set; } = new List<Bid>();
+    public IReadOnlyCollection<Bid> Bids => _bids;
+    private readonly List<Bid> _bids = new();
+
     public Guid? WinnerId { get; private set; }
 
     private AuctionItem() { }
@@ -61,7 +63,7 @@ public class AuctionItem
         return new AuctionItem(id, name, description, startingPrice, startDate, endDate);
     }
 
-    public void PlaceBid(Guid userId, decimal amount, DateTimeOffset currentTime)
+    public Bid PlaceBid(Guid userId, decimal amount, DateTimeOffset currentTime)
     {
         if (Status != AuctionStatus.Active)
             throw new DomainException("Bidding is only allowed on active auctions.");
@@ -75,13 +77,20 @@ public class AuctionItem
         if (userId == CurrentHighestBidderId)
             throw new DomainException("You are already the highest bidder.");
 
-        decimal requiredAmount = CurrentHighestBid > 0 ? CurrentHighestBid : StartingPrice;
+        var minimumBid = CurrentHighestBid > 0
+            ? CurrentHighestBid
+            : StartingPrice;
 
-        if (amount <= requiredAmount)
-            throw new DomainException($"Bid must be higher than {requiredAmount}.");
+        if (amount <= minimumBid)
+            throw new DomainException($"Bid must be higher than {minimumBid}.");
 
+        var bid = Bid.Create(Id, userId, amount);
+
+        _bids.Add(bid);
         CurrentHighestBid = amount;
         CurrentHighestBidderId = userId;
+
+        return bid;
     }
 
     public void Activate()
