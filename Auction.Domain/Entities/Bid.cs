@@ -10,7 +10,7 @@ public class Bid
     public decimal Amount { get; private set; }
     public DateTimeOffset BidTime { get; private set; }
 
-    public AuctionItem Auction { get; private set; } = null!;
+    public AuctionItem AuctionItem { get; private set; } = null!;
     public User User { get; private set; } = null!;
 
     private Bid() { }
