@@ -11,7 +11,6 @@ public class Bid
     public DateTimeOffset BidTime { get; private set; }
 
     public AuctionItem AuctionItem { get; private set; } = null!;
-    public User User { get; private set; } = null!;
 
     private Bid() { }
 

@@ -16,7 +16,6 @@ public class AuctionItem
     public AuctionStatus Status { get; private set; }
 
     public ICollection<Bid> Bids { get; private set; } = new List<Bid>();
-    public User? Winner { get; private set; }
     public Guid? WinnerId { get; private set; }
 
     private AuctionItem() { }
