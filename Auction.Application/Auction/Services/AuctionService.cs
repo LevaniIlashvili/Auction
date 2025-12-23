@@ -1,12 +1,12 @@
 ﻿using Auction.Application.Auction.Intefaces;
 using Auction.Application.Auction.Requests;
 using Auction.Application.Auction.Responses;
-using Auction.Application.AuctionItems.Dtos;
+using Auction.Application.Auction.Dtos;
 using Auction.Application.Exceptions;
 using Auction.Application.Interfaces.Infrastructure;
 using Auction.Domain.Entities;
 
-namespace Auction.Application.AuctionItems.Services;
+namespace Auction.Application.Auction.Services;
 
 public class AuctionService : IAuctionService
 {
@@ -37,4 +37,20 @@ public class AuctionService : IAuctionService
     public async Task BidOnAuctionAsync(BidOnAuctionRequest request, CancellationToken ct = default)
     {
         var auction = await _unitOfWork.Auctions.GetByIdAsync(request.AuctionId, ct);
+    public async Task<List<AuctionSummaryDto>> GetAuctionSummariesAsync(CancellationToken ct = default)
+    {
+        var auctions = await _auctionReadRepository.GetAllSummariesAsync(ct);
+
+        return auctions;
+    }
+
+    public async Task<GetAuctionDetailsResponse> GetAuctionDetailsAsync(Guid auctionId, CancellationToken ct = default)
+    {
+        var auction = await _auctionReadRepository.GetDetailsAsync(auctionId, ct);
+
+        if (auction == null)
+            throw new NotFoundException("Auction not found");
+
+        return auction;
+    }
 }

@@ -1,5 +1,5 @@
 ﻿using Auction.Application.Auction.Intefaces;
-using Auction.Application.AuctionItems.Services;
+using Auction.Application.Auction.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Auction.Application;
