@@ -13,4 +13,4 @@ public sealed record GetAuctionDetailsResponse(
     DateTimeOffset StartDate,
     DateTimeOffset EndDate,
     Guid? WinnerId,
-    List<BidDto> BidDtos);
+    List<BidDto> Bids);
