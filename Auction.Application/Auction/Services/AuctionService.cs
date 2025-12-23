@@ -37,6 +37,15 @@ public class AuctionService : IAuctionService
     public async Task BidOnAuctionAsync(BidOnAuctionRequest request, CancellationToken ct = default)
     {
         var auction = await _unitOfWork.Auctions.GetByIdAsync(request.AuctionId, ct);
+
+        if (auction == null)
+            throw new NotFoundException("Auction not found");
+
+        auction.PlaceBid(request.UserId, request.Amount, DateTimeOffset.UtcNow);
+
+        await _unitOfWork.SaveChangesAsync(ct);
+    }
+
     public async Task<List<AuctionSummaryDto>> GetAuctionSummariesAsync(CancellationToken ct = default)
     {
         var auctions = await _auctionReadRepository.GetAllSummariesAsync(ct);
