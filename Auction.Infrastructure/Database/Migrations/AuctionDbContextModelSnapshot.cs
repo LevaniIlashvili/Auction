@@ -69,7 +69,6 @@ namespace Auction.Infrastructure.Database.Migrations
             modelBuilder.Entity("Auction.Domain.Entities.Bid", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<decimal>("Amount")

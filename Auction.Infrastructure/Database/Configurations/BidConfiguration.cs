@@ -10,6 +10,9 @@ public class BidConfiguration : IEntityTypeConfiguration<Bid>
     {
         builder.HasKey(b => b.Id);
 
+        builder.Property(x => x.Id)
+            .ValueGeneratedNever();
+
         builder.Property(b => b.Amount)
             .IsRequired()
             .HasPrecision(18, 2);

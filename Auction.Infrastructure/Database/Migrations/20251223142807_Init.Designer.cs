@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Auction.Infrastructure.Database.Migrations
 {
     [DbContext(typeof(AuctionDbContext))]
-    [Migration("20251221131326_Init")]
+    [Migration("20251223142807_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -72,7 +72,6 @@ namespace Auction.Infrastructure.Database.Migrations
             modelBuilder.Entity("Auction.Domain.Entities.Bid", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<decimal>("Amount")
