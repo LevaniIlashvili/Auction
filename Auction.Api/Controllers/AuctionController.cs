@@ -1,5 +1,6 @@
 ﻿using Auction.Application.Auction.Intefaces;
 using Auction.Application.Auction.Requests;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Auction.Api.Controllers;
@@ -15,7 +16,9 @@ public class AuctionController : ControllerBase
         _auctionService = auctionService;        
     }
 
+
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> CreateAuction([FromBody] AddAuctionRequest request, CancellationToken ct = default)
     {
         await _auctionService.AddAuctionAsync(request, ct);
