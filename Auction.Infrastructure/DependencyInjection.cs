@@ -3,6 +3,7 @@ using Auction.Application.Interfaces;
 using Auction.Application.Interfaces.Infrastructure;
 using Auction.Infrastructure.Database;
 using Auction.Infrastructure.Database.Repositories;
+using Auction.Infrastructure.Options;
 using Auction.Infrastructure.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +18,11 @@ public static class DependencyInjection
     {
         services.AddDbContext<AuctionDbContext>(
             options => options.UseNpgsql(configuration.GetConnectionString("Default")));
+
+        services.AddOptions<JwtSettings>()
+            .Bind(configuration.GetSection(nameof(JwtSettings)))
+            .ValidateDataAnnotations()
+            .ValidateOnStart();
 
         services.AddIdentity<IdentityUser, IdentityRole>()
             .AddEntityFrameworkStores<AuctionDbContext>();

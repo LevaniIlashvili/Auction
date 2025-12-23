@@ -1,5 +1,7 @@
 ﻿using Auction.Application.Interfaces.Infrastructure;
+using Auction.Infrastructure.Options;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -9,11 +11,11 @@ namespace Auction.Infrastructure.Services;
 
 public class JwtTokenService : IJwtTokenService
 {
-    private readonly IConfiguration _config;
+    private readonly JwtSettings _jwtSettings;
 
-    public JwtTokenService(IConfiguration config)
+    public JwtTokenService(IOptions<JwtSettings> jwtSettings)
     {
-        _config = config;
+        _jwtSettings = jwtSettings.Value;
     }
 
     public Task<string> CreateTokenAsync(
@@ -31,11 +33,11 @@ public class JwtTokenService : IJwtTokenService
             claims.Add(new Claim(ClaimTypes.Role, role));
 
         var key = new SymmetricSecurityKey(
-            Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));
+            Encoding.UTF8.GetBytes(_jwtSettings.Secret));
 
         var token = new JwtSecurityToken(
-            issuer: _config["Jwt:Issuer"],
-            audience: _config["Jwt:Audience"],
+            issuer: _jwtSettings.Issuer,
+            audience: _jwtSettings.Audience,
             claims: claims,
             expires: DateTime.UtcNow.AddMinutes(60),
             signingCredentials:
