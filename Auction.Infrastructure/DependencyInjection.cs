@@ -1,6 +1,8 @@
-﻿using Auction.Application.Interfaces;
+﻿using Auction.Application.Auction.Intefaces;
+using Auction.Application.Interfaces;
 using Auction.Application.Interfaces.Infrastructure;
 using Auction.Infrastructure.Database;
+using Auction.Infrastructure.Database.Repositories;
 using Auction.Infrastructure.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +23,9 @@ public static class DependencyInjection
 
         services.AddScoped<IUserIdentityService, IdentityService>();
         services.AddScoped<IJwtTokenService, JwtTokenService>();
+
+        services.AddScoped<IAuctionRepository, AuctionRepository>();
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         return services;
     }
