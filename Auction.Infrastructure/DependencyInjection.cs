@@ -25,6 +25,7 @@ public static class DependencyInjection
         services.AddScoped<IJwtTokenService, JwtTokenService>();
 
         services.AddScoped<IAuctionRepository, AuctionRepository>();
+        services.AddScoped<IAuctionReadRepository, AuctionReadRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         return services;

@@ -33,4 +33,8 @@ public class AuctionService : IAuctionService
 
         await _unitOfWork.SaveChangesAsync(ct);
     }
+
+    public async Task BidOnAuctionAsync(BidOnAuctionRequest request, CancellationToken ct = default)
+    {
+        var auction = await _unitOfWork.Auctions.GetByIdAsync(request.AuctionId, ct);
 }

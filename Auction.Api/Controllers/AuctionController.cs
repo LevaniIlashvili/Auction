@@ -22,4 +22,12 @@ public class AuctionController : ControllerBase
 
         return Ok();
     }
+
+    [HttpGet]
+    public async Task<IActionResult> GetAuctionSummaries(CancellationToken ct = default)
+    {
+        var auctions = await _auctionService.GetAuctionSummariesAsync(ct);
+
+        return Ok(auctions);
+    }
 }
