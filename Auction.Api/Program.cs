@@ -1,3 +1,4 @@
+using Auction.Api.Middlewares;
 using Auction.Application;
 using Auction.Infrastructure;
 using Auction.Infrastructure.Database;
@@ -43,6 +44,8 @@ builder.Services.AddAuthentication(options =>
 });
 
 var app = builder.Build();
+
+app.UseCustomExceptionHandler();
 
 using (var scope = app.Services.CreateScope())
 {
