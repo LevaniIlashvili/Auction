@@ -34,14 +34,14 @@ public class AuctionService : IAuctionService
         await _unitOfWork.SaveChangesAsync(ct);
     }
 
-    public async Task BidOnAuctionAsync(BidOnAuctionRequest request, CancellationToken ct = default)
+    public async Task BidOnAuctionAsync(Guid userId, BidOnAuctionRequest request, CancellationToken ct = default)
     {
         var auction = await _unitOfWork.Auctions.GetByIdAsync(request.AuctionId, ct);
 
         if (auction == null)
             throw new NotFoundException("Auction not found");
 
-        auction.PlaceBid(request.UserId, request.Amount, DateTimeOffset.UtcNow);
+        auction.PlaceBid(userId, request.Amount, DateTimeOffset.UtcNow);
 
         await _unitOfWork.SaveChangesAsync(ct);
     }

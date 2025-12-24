@@ -42,10 +42,16 @@ public class AuctionController : ControllerBase
         return Ok(auctionDetails);
     }
 
-    [HttpPost("bid")]
-    public async Task<IActionResult> PlaceBid([FromBody] BidOnAuctionRequest request, CancellationToken ct = default)
+    [HttpPost("{auctionId}/bids")]
+    [Authorize]
+    public async Task<IActionResult> PlaceBid([FromRoute] Guid auctionId, [FromBody] BidOnAuctionRequest request, CancellationToken ct = default)
     {
-        await _auctionService.BidOnAuctionAsync(request, ct);
+        var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+        if (userIdClaim == null) return Unauthorized();
+
+        var bid = request with { AuctionId = auctionId };
+
+        await _auctionService.BidOnAuctionAsync(Guid.Parse(userIdClaim), bid, ct);
 
         return Ok();
     }
