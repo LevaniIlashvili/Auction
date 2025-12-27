@@ -44,7 +44,7 @@ public class AuctionReadRepository : IAuctionReadRepository
                 a.StartDate,
                 a.EndDate,
                 a.WinnerId,
-                a.Bids.Select(b => new BidDto(
+                a.Bids.OrderByDescending(x => x.BidTime).Select(b => new BidDto(
                     b.Id,
                     b.AuctionId,
                     b.UserId,
