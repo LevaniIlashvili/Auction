@@ -61,6 +61,8 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
+app.MapHub<AuctionHub>("/auctionHub");
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
