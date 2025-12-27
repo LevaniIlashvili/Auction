@@ -1,7 +1,10 @@
-﻿using Auction.Application.Auction.Intefaces;
+﻿using Auction.Api.Hubs;
+using Auction.Application.Auction.Dtos;
+using Auction.Application.Auction.Intefaces;
 using Auction.Application.Auction.Requests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Auction.Api.Controllers;
 
@@ -10,10 +13,12 @@ namespace Auction.Api.Controllers;
 public class AuctionController : ControllerBase
 {
     private readonly IAuctionService _auctionService;
+    private readonly IHubContext<AuctionHub> _hubContext;
 
-    public AuctionController(IAuctionService auctionService)
+    public AuctionController(IAuctionService auctionService, IHubContext<AuctionHub> hubContext)
     {
-        _auctionService = auctionService;        
+        _auctionService = auctionService;
+        _hubContext = hubContext;
     }
 
 
@@ -49,9 +54,14 @@ public class AuctionController : ControllerBase
         var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
         if (userIdClaim == null) return Unauthorized();
 
-        var bid = request with { AuctionId = auctionId };
+        var bidRequest = request with { AuctionId = auctionId };
 
-        await _auctionService.BidOnAuctionAsync(Guid.Parse(userIdClaim), bid, ct);
+        var userId = Guid.Parse(userIdClaim);
+        var bid = await _auctionService.BidOnAuctionAsync(userId, bidRequest, ct);
+
+        await _hubContext.Clients
+            .Group(auctionId.ToString())
+            .SendAsync("BidPlaced", new BidDto(bid.Id, bid.AuctionId, bid.UserId, bid.Amount, bid.BidTime), ct);
 
         return Ok();
     }
