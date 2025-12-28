@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Auction.Infrastructure.Database.Migrations
 {
     [DbContext(typeof(AuctionDbContext))]
-    [Migration("20251223142807_Init")]
+    [Migration("20251228075314_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -60,6 +60,12 @@ namespace Auction.Infrastructure.Database.Migrations
 
                     b.Property<int>("Status")
                         .HasColumnType("integer");
+
+                    b.Property<uint>("Version")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.Property<Guid?>("WinnerId")
                         .HasColumnType("uuid");

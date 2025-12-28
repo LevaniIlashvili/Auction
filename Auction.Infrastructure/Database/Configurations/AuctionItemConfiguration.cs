@@ -24,5 +24,8 @@ public class AuctionItemConfiguration : IEntityTypeConfiguration<AuctionItem>
         builder.Property(a => a.CurrentHighestBid).HasPrecision(18, 2);
 
         builder.Property(a => a.Status).IsRequired();
+
+        builder.Property<uint>("Version")
+            .IsRowVersion();
     }
 }
